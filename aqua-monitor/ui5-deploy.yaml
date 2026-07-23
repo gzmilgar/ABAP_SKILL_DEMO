@@ -1,0 +1,23 @@
+specVersion: "3.1"
+metadata:
+  name: com.gilgar.aquamonitor
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: https://e9233ee0-105b-4c71-893f-d4b6f0ddd36a.abap-web.us10.hana.ondemand.com
+          client: "100"
+          authenticationType: reentranceTicket
+        app:
+          name: ZAQUA_MONITOR
+          # TODO: kendi paketini ve transport'unu gir
+          package: ZGILGAR_UI_AQUA
+          transport: REPLACE_WITH_TRANSPORT
+          description: Aqua Monitor (Feeding/DeadFish/Transfer/Harvest)

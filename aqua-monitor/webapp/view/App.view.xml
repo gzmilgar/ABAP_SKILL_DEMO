@@ -1,0 +1,192 @@
+<mvc:View
+    controllerName="com.gilgar.aquamonitor.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+
+    <App id="app">
+        <Page id="page" title="{i18n>appTitle}">
+            <headerContent>
+                <Button id="btnRefresh" icon="sap-icon://refresh" tooltip="{i18n>refresh}" press=".onRefresh"/>
+            </headerContent>
+            <content>
+                <IconTabBar id="itb" class="sapUiResponsiveContentPadding" expandable="false">
+                    <items>
+
+                        <!-- ================= FEEDING ================= -->
+                        <IconTabFilter id="tabFeeding" icon="sap-icon://nutrition-activity"
+                                       text="{i18n>tabFeeding}" count="{/Feeding/$count}" iconColor="Positive">
+                            <Table id="tblFeeding" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
+                                   items="{path: '/Feeding', sorter: {path: 'EntryDateTime', descending: true}}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>tabFeeding}" level="H2"/>
+                                        <ToolbarSpacer/>
+                                        <SearchField width="16rem" placeholder="{i18n>searchBatch}"
+                                                     search=".onSearch" app:tableId="tblFeeding"/>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>colDate}"/></Column>
+                                    <Column><Text text="{i18n>colTank}"/></Column>
+                                    <Column><Text text="{i18n>colBatch}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>colQuantity}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colFeedCode}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colProdOrder}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colMatDoc}"/></Column>
+                                    <Column hAlign="Center"><Text text="{i18n>colStatus}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem vAlign="Middle">
+                                        <cells>
+                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
+                                            <Text text="{Tank}"/>
+                                            <ObjectIdentifier title="{Batch}"/>
+                                            <ObjectNumber number="{Quantity}"/>
+                                            <Text text="{= ${ERPFeedCode} || ${AMFeedCode} }"/>
+                                            <Text text="{ProductionOrder}"/>
+                                            <Text text="{MaterialDocumentNumber}"/>
+                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{ErrorText}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- ================= DEAD FISH ================= -->
+                        <IconTabFilter id="tabDeadFish" icon="sap-icon://alert"
+                                       text="{i18n>tabDeadFish}" count="{/DeadFish/$count}" iconColor="Negative">
+                            <Table id="tblDeadFish" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
+                                   items="{path: '/DeadFish', sorter: {path: 'EntryDateTime', descending: true}}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>tabDeadFish}" level="H2"/>
+                                        <ToolbarSpacer/>
+                                        <SearchField width="16rem" placeholder="{i18n>searchBatch}"
+                                                     search=".onSearch" app:tableId="tblDeadFish"/>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>colDate}"/></Column>
+                                    <Column><Text text="{i18n>colUnit}"/></Column>
+                                    <Column><Text text="{i18n>colBatch}"/></Column>
+                                    <Column><Text text="{i18n>colCause}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>colQuantity}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colProdOrder}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colMatDoc}"/></Column>
+                                    <Column hAlign="Center"><Text text="{i18n>colStatus}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem vAlign="Middle">
+                                        <cells>
+                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
+                                            <Text text="{Unit}"/>
+                                            <ObjectIdentifier title="{Batch}"/>
+                                            <Text text="{Cause}"/>
+                                            <ObjectNumber number="{Quantity}"/>
+                                            <Text text="{ProductionOrder}"/>
+                                            <Text text="{MaterialDocumentNumber}"/>
+                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{ErrorText}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- ================= TRANSFER ================= -->
+                        <IconTabFilter id="tabTransfer" icon="sap-icon://shipping-status"
+                                       text="{i18n>tabTransfer}" count="{/Transfer/$count}" iconColor="Critical">
+                            <Table id="tblTransfer" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
+                                   items="{path: '/Transfer', sorter: {path: 'EntryDateTime', descending: true}}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>tabTransfer}" level="H2"/>
+                                        <ToolbarSpacer/>
+                                        <SearchField width="16rem" placeholder="{i18n>searchBatch}"
+                                                     search=".onSearch" app:tableId="tblTransfer"/>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>colDate}"/></Column>
+                                    <Column><Text text="{i18n>colWayBill}"/></Column>
+                                    <Column><Text text="{i18n>colFromStore}"/></Column>
+                                    <Column><Text text="{i18n>colToStore}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colItem}"/></Column>
+                                    <Column hAlign="End"><Text text="{i18n>colQuantity}"/></Column>
+                                    <Column><Text text="{i18n>colBatch}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colMatDoc}"/></Column>
+                                    <Column hAlign="Center"><Text text="{i18n>colStatus}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem vAlign="Middle">
+                                        <cells>
+                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
+                                            <ObjectIdentifier title="{WayBillCode}"/>
+                                            <Text text="{ERPStoreCode}"/>
+                                            <Text text="{ERPDestinationStoreCode}"/>
+                                            <Text text="{ERPItemCode}"/>
+                                            <ObjectNumber number="{Qty}"/>
+                                            <Text text="{Batch}"/>
+                                            <Text text="{MaterialDocumentNumber}"/>
+                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{ErrorText}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- ================= HARVEST ================= -->
+                        <IconTabFilter id="tabHarvest" icon="sap-icon://inventory"
+                                       text="{i18n>tabHarvest}" count="{/Harvest/$count}" iconColor="Default">
+                            <Table id="tblHarvest" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
+                                   items="{path: '/Harvest', sorter: {path: 'EntryDateTime', descending: true}}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>tabHarvest}" level="H2"/>
+                                        <ToolbarSpacer/>
+                                        <SearchField width="16rem" placeholder="{i18n>searchBatch}"
+                                                     search=".onSearch" app:tableId="tblHarvest"/>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>colDate}"/></Column>
+                                    <Column><Text text="{i18n>colCageLot}"/></Column>
+                                    <Column><Text text="{i18n>colUnit}"/></Column>
+                                    <Column><Text text="{i18n>colBatch}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colSite}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colProdOrder}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colConfirmation}"/></Column>
+                                    <Column hAlign="Center"><Text text="{i18n>colStatus}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem vAlign="Middle">
+                                        <cells>
+                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
+                                            <ObjectIdentifier title="{CageLotID}"/>
+                                            <Text text="{Unit}"/>
+                                            <Text text="{Batch}"/>
+                                            <Text text="{= ${ERPSiteCode} || ${AMSiteCode} }"/>
+                                            <Text text="{ProductionOrder}"/>
+                                            <Text text="{ProdOrderConfirmation}"/>
+                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{ErrorText}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                    </items>
+                </IconTabBar>
+            </content>
+        </Page>
+    </App>
+</mvc:View>
