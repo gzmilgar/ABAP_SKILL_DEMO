@@ -53,15 +53,8 @@
           "bundleName": "com.gilgar.aquamonitor.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {
-          "autoExpandSelect": true,
-          "operationMode": "Server",
-          "groupId": "$auto",
-          "earlyRequests": true
-        }
+      "data": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "resources": {

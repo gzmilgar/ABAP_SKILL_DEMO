@@ -2,6 +2,7 @@
     controllerName="com.gilgar.aquamonitor.controller.App"
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns="sap.m">
 
@@ -16,16 +17,16 @@
 
                         <!-- ================= FEEDING ================= -->
                         <IconTabFilter id="tabFeeding" icon="sap-icon://nutrition-activity"
-                                       text="{i18n>tabFeeding}" count="{/Feeding/$count}" iconColor="Positive">
+                                       text="{i18n>tabFeeding}" count="{data>/counts/Feeding}" iconColor="Positive">
                             <OverflowToolbar design="Transparent" class="sapUiTinyMarginBottom">
                                 <DateRangeSelection id="fDateFeeding" width="16rem" placeholder="{i18n>filterDate}"/>
                                 <Input id="fBatchFeeding" width="10rem" placeholder="{i18n>filterBatch}" submit=".onGo" app:tab="Feeding"/>
                                 <Input id="fExtraFeeding" width="10rem" placeholder="{i18n>colTank}" submit=".onGo" app:tab="Feeding"/>
                                 <Select id="fStatusFeeding" width="9rem">
                                     <items>
-                                        <core:Item xmlns:core="sap.ui.core" key="ALL" text="{i18n>statusAll}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="OK" text="{i18n>statusOk}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="ERR" text="{i18n>statusError}"/>
+                                        <core:Item key="ALL" text="{i18n>statusAll}"/>
+                                        <core:Item key="OK" text="{i18n>statusOk}"/>
+                                        <core:Item key="ERR" text="{i18n>statusError}"/>
                                     </items>
                                 </Select>
                                 <ToolbarSpacer/>
@@ -33,7 +34,8 @@
                                 <Button text="{i18n>clear}" press=".onClear" app:tab="Feeding"/>
                             </OverflowToolbar>
                             <Table id="tblFeeding" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
-                                   items="{path: '/Feeding', sorter: {path: 'EntryDateTime', descending: true}}">
+                                   busy="{data>/busy/Feeding}" busyIndicatorDelay="0"
+                                   items="{data>/Feeding}">
                                 <headerToolbar>
                                     <OverflowToolbar>
                                         <Title text="{i18n>tabFeeding}" level="H2"/>
@@ -52,16 +54,16 @@
                                 <items>
                                     <ColumnListItem vAlign="Middle">
                                         <cells>
-                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
-                                            <Text text="{Tank}"/>
-                                            <ObjectIdentifier title="{Batch}"/>
-                                            <ObjectNumber number="{Quantity}"/>
-                                            <Text text="{= ${ERPFeedCode} || ${AMFeedCode} }"/>
-                                            <Text text="{ProductionOrder}"/>
-                                            <Text text="{MaterialDocumentNumber}"/>
-                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
-                                                          state="{= ${Success} ? 'Success' : 'Error' }"
-                                                          tooltip="{ErrorText}"/>
+                                            <Text text="{parts: [{path: 'data>EntryDateTime'}, {path: 'data>CreatedAt'}], formatter: '.formatEntryDate'}"/>
+                                            <Text text="{data>Tank}"/>
+                                            <ObjectIdentifier title="{data>Batch}"/>
+                                            <ObjectNumber number="{data>Quantity}"/>
+                                            <Text text="{= ${data>ERPFeedCode} || ${data>AMFeedCode} }"/>
+                                            <Text text="{data>ProductionOrder}"/>
+                                            <Text text="{data>MaterialDocumentNumber}"/>
+                                            <ObjectStatus text="{= ${data>Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${data>Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{data>ErrorText}"/>
                                         </cells>
                                     </ColumnListItem>
                                 </items>
@@ -70,16 +72,16 @@
 
                         <!-- ================= DEAD FISH ================= -->
                         <IconTabFilter id="tabDeadFish" icon="sap-icon://alert"
-                                       text="{i18n>tabDeadFish}" count="{/DeadFish/$count}" iconColor="Negative">
+                                       text="{i18n>tabDeadFish}" count="{data>/counts/DeadFish}" iconColor="Negative">
                             <OverflowToolbar design="Transparent" class="sapUiTinyMarginBottom">
                                 <DateRangeSelection id="fDateDeadFish" width="16rem" placeholder="{i18n>filterDate}"/>
                                 <Input id="fBatchDeadFish" width="10rem" placeholder="{i18n>filterBatch}" submit=".onGo" app:tab="DeadFish"/>
                                 <Input id="fExtraDeadFish" width="10rem" placeholder="{i18n>colUnit}" submit=".onGo" app:tab="DeadFish"/>
                                 <Select id="fStatusDeadFish" width="9rem">
                                     <items>
-                                        <core:Item xmlns:core="sap.ui.core" key="ALL" text="{i18n>statusAll}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="OK" text="{i18n>statusOk}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="ERR" text="{i18n>statusError}"/>
+                                        <core:Item key="ALL" text="{i18n>statusAll}"/>
+                                        <core:Item key="OK" text="{i18n>statusOk}"/>
+                                        <core:Item key="ERR" text="{i18n>statusError}"/>
                                     </items>
                                 </Select>
                                 <ToolbarSpacer/>
@@ -87,7 +89,8 @@
                                 <Button text="{i18n>clear}" press=".onClear" app:tab="DeadFish"/>
                             </OverflowToolbar>
                             <Table id="tblDeadFish" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
-                                   items="{path: '/DeadFish', sorter: {path: 'EntryDateTime', descending: true}}">
+                                   busy="{data>/busy/DeadFish}" busyIndicatorDelay="0"
+                                   items="{data>/DeadFish}">
                                 <headerToolbar>
                                     <OverflowToolbar>
                                         <Title text="{i18n>tabDeadFish}" level="H2"/>
@@ -106,16 +109,16 @@
                                 <items>
                                     <ColumnListItem vAlign="Middle">
                                         <cells>
-                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
-                                            <Text text="{Unit}"/>
-                                            <ObjectIdentifier title="{Batch}"/>
-                                            <Text text="{Cause}"/>
-                                            <ObjectNumber number="{Quantity}"/>
-                                            <Text text="{ProductionOrder}"/>
-                                            <Text text="{MaterialDocumentNumber}"/>
-                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
-                                                          state="{= ${Success} ? 'Success' : 'Error' }"
-                                                          tooltip="{ErrorText}"/>
+                                            <Text text="{parts: [{path: 'data>EntryDateTime'}, {path: 'data>CreatedAt'}], formatter: '.formatEntryDate'}"/>
+                                            <Text text="{data>Unit}"/>
+                                            <ObjectIdentifier title="{data>Batch}"/>
+                                            <Text text="{data>Cause}"/>
+                                            <ObjectNumber number="{data>Quantity}"/>
+                                            <Text text="{data>ProductionOrder}"/>
+                                            <Text text="{data>MaterialDocumentNumber}"/>
+                                            <ObjectStatus text="{= ${data>Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${data>Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{data>ErrorText}"/>
                                         </cells>
                                     </ColumnListItem>
                                 </items>
@@ -124,16 +127,16 @@
 
                         <!-- ================= TRANSFER ================= -->
                         <IconTabFilter id="tabTransfer" icon="sap-icon://shipping-status"
-                                       text="{i18n>tabTransfer}" count="{/Transfer/$count}" iconColor="Critical">
+                                       text="{i18n>tabTransfer}" count="{data>/counts/Transfer}" iconColor="Critical">
                             <OverflowToolbar design="Transparent" class="sapUiTinyMarginBottom">
                                 <DateRangeSelection id="fDateTransfer" width="16rem" placeholder="{i18n>filterDate}"/>
                                 <Input id="fBatchTransfer" width="10rem" placeholder="{i18n>filterBatch}" submit=".onGo" app:tab="Transfer"/>
                                 <Input id="fExtraTransfer" width="10rem" placeholder="{i18n>colWayBill}" submit=".onGo" app:tab="Transfer"/>
                                 <Select id="fStatusTransfer" width="9rem">
                                     <items>
-                                        <core:Item xmlns:core="sap.ui.core" key="ALL" text="{i18n>statusAll}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="OK" text="{i18n>statusOk}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="ERR" text="{i18n>statusError}"/>
+                                        <core:Item key="ALL" text="{i18n>statusAll}"/>
+                                        <core:Item key="OK" text="{i18n>statusOk}"/>
+                                        <core:Item key="ERR" text="{i18n>statusError}"/>
                                     </items>
                                 </Select>
                                 <ToolbarSpacer/>
@@ -141,7 +144,8 @@
                                 <Button text="{i18n>clear}" press=".onClear" app:tab="Transfer"/>
                             </OverflowToolbar>
                             <Table id="tblTransfer" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
-                                   items="{path: '/Transfer', sorter: {path: 'EntryDateTime', descending: true}}">
+                                   busy="{data>/busy/Transfer}" busyIndicatorDelay="0"
+                                   items="{data>/Transfer}">
                                 <headerToolbar>
                                     <OverflowToolbar>
                                         <Title text="{i18n>tabTransfer}" level="H2"/>
@@ -161,17 +165,17 @@
                                 <items>
                                     <ColumnListItem vAlign="Middle">
                                         <cells>
-                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
-                                            <ObjectIdentifier title="{WayBillCode}"/>
-                                            <Text text="{ERPStoreCode}"/>
-                                            <Text text="{ERPDestinationStoreCode}"/>
-                                            <Text text="{ERPItemCode}"/>
-                                            <ObjectNumber number="{Qty}"/>
-                                            <Text text="{Batch}"/>
-                                            <Text text="{MaterialDocumentNumber}"/>
-                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
-                                                          state="{= ${Success} ? 'Success' : 'Error' }"
-                                                          tooltip="{ErrorText}"/>
+                                            <Text text="{parts: [{path: 'data>EntryDateTime'}, {path: 'data>CreatedAt'}], formatter: '.formatEntryDate'}"/>
+                                            <ObjectIdentifier title="{data>WayBillCode}"/>
+                                            <Text text="{data>ERPStoreCode}"/>
+                                            <Text text="{data>ERPDestinationStoreCode}"/>
+                                            <Text text="{data>ERPItemCode}"/>
+                                            <ObjectNumber number="{data>Qty}"/>
+                                            <Text text="{data>Batch}"/>
+                                            <Text text="{data>MaterialDocumentNumber}"/>
+                                            <ObjectStatus text="{= ${data>Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${data>Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{data>ErrorText}"/>
                                         </cells>
                                     </ColumnListItem>
                                 </items>
@@ -180,16 +184,16 @@
 
                         <!-- ================= HARVEST ================= -->
                         <IconTabFilter id="tabHarvest" icon="sap-icon://inventory"
-                                       text="{i18n>tabHarvest}" count="{/Harvest/$count}" iconColor="Default">
+                                       text="{i18n>tabHarvest}" count="{data>/counts/Harvest}" iconColor="Default">
                             <OverflowToolbar design="Transparent" class="sapUiTinyMarginBottom">
                                 <DateRangeSelection id="fDateHarvest" width="16rem" placeholder="{i18n>filterDate}"/>
                                 <Input id="fBatchHarvest" width="10rem" placeholder="{i18n>filterBatch}" submit=".onGo" app:tab="Harvest"/>
                                 <Input id="fExtraHarvest" width="10rem" placeholder="{i18n>colCageLot}" submit=".onGo" app:tab="Harvest"/>
                                 <Select id="fStatusHarvest" width="9rem">
                                     <items>
-                                        <core:Item xmlns:core="sap.ui.core" key="ALL" text="{i18n>statusAll}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="OK" text="{i18n>statusOk}"/>
-                                        <core:Item xmlns:core="sap.ui.core" key="ERR" text="{i18n>statusError}"/>
+                                        <core:Item key="ALL" text="{i18n>statusAll}"/>
+                                        <core:Item key="OK" text="{i18n>statusOk}"/>
+                                        <core:Item key="ERR" text="{i18n>statusError}"/>
                                     </items>
                                 </Select>
                                 <ToolbarSpacer/>
@@ -197,7 +201,8 @@
                                 <Button text="{i18n>clear}" press=".onClear" app:tab="Harvest"/>
                             </OverflowToolbar>
                             <Table id="tblHarvest" inset="false" growing="true" growingThreshold="25" sticky="ColumnHeaders,HeaderToolbar"
-                                   items="{path: '/Harvest', sorter: {path: 'EntryDateTime', descending: true}}">
+                                   busy="{data>/busy/Harvest}" busyIndicatorDelay="0"
+                                   items="{data>/Harvest}">
                                 <headerToolbar>
                                     <OverflowToolbar>
                                         <Title text="{i18n>tabHarvest}" level="H2"/>
@@ -216,16 +221,16 @@
                                 <items>
                                     <ColumnListItem vAlign="Middle">
                                         <cells>
-                                            <Text text="{path: 'EntryDateTime', formatter: '.formatDateTime'}"/>
-                                            <ObjectIdentifier title="{CageLotID}"/>
-                                            <Text text="{Unit}"/>
-                                            <Text text="{Batch}"/>
-                                            <Text text="{= ${ERPSiteCode} || ${AMSiteCode} }"/>
-                                            <Text text="{ProductionOrder}"/>
-                                            <Text text="{ProdOrderConfirmation}"/>
-                                            <ObjectStatus text="{= ${Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
-                                                          state="{= ${Success} ? 'Success' : 'Error' }"
-                                                          tooltip="{ErrorText}"/>
+                                            <Text text="{parts: [{path: 'data>EntryDateTime'}, {path: 'data>CreatedAt'}], formatter: '.formatEntryDate'}"/>
+                                            <ObjectIdentifier title="{data>CageLotID}"/>
+                                            <Text text="{data>Unit}"/>
+                                            <Text text="{data>Batch}"/>
+                                            <Text text="{= ${data>ERPSiteCode} || ${data>AMSiteCode} }"/>
+                                            <Text text="{data>ProductionOrder}"/>
+                                            <Text text="{data>ProdOrderConfirmation}"/>
+                                            <ObjectStatus text="{= ${data>Success} ? ${i18n>statusOk} : ${i18n>statusError} }"
+                                                          state="{= ${data>Success} ? 'Success' : 'Error' }"
+                                                          tooltip="{data>ErrorText}"/>
                                         </cells>
                                     </ColumnListItem>
                                 </items>
