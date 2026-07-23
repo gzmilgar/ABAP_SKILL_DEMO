@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Aqua Monitor - Fiori Elements (OData V4) yerel UI annotation'lari
+    ==============================================================================
+    Backend RAP servisi (zgilgar_ui_aqua) DEGISMEDEN, 4 entity (Feeding / DeadFish /
+    Transfer / Harvest) icin List Report kolonlari, filtre alanlari ve sekme
+    baslikları BU dosyadan uretilir. Custom controller/view kodu yoktur.
+
+    ! Backend'e bagli TEK degerler asagidaki iki string'dir; annotation'lar
+      gorunmezse $metadata ile dogrulayin:
+        - Namespace : com.sap.gateway.srvd.zgilgar_ui_aqua.v0001
+        - EntityType: <EntitySet>Type  (FeedingType, DeadFishType, ...)
+      Bu isimlendirme RAP OData V4 (srvd) servisleri icin standarttir.
+-->
+<edmx:Edmx Version="4.0"
+           xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"
+           xmlns:edm="http://docs.oasis-open.org/odata/ns/edm">
+
+    <edmx:Reference Uri="/sap/opu/odata4/sap/zgilgar_ui_aqua_o4/srvd/sap/zgilgar_ui_aqua/0001/$metadata">
+        <edmx:Include Namespace="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001"/>
+    </edmx:Reference>
+
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local.aquamonitor">
+
+            <!-- ================================================================= -->
+            <!-- FEEDING                                                            -->
+            <!-- ================================================================= -->
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType">
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="{@i18n>tabFeeding}"/>
+                        <PropertyValue Property="TypeNamePlural" String="{@i18n>tabFeeding}"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="Batch"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionFields">
+                    <Collection>
+                        <PropertyPath>CreatedAt</PropertyPath>
+                        <PropertyPath>Batch</PropertyPath>
+                        <PropertyPath>Tank</PropertyPath>
+                        <PropertyPath>Success</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.LineItem">
+                    <Collection>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="CreatedAt"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Tank"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Batch"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Quantity"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ERPFeedCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="AMFeedCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ProductionOrder"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="MaterialDocumentNumber"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Success"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ErrorText"/></Record>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionPresentationVariant" Qualifier="Main">
+                    <Record>
+                        <PropertyValue Property="Text" String="{@i18n>tabFeeding}"/>
+                        <PropertyValue Property="SelectionVariant">
+                            <Record>
+                                <PropertyValue Property="Text" String="{@i18n>tabFeeding}"/>
+                                <PropertyValue Property="SelectOptions"><Collection/></PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="PresentationVariant">
+                            <Record>
+                                <PropertyValue Property="SortOrder">
+                                    <Collection>
+                                        <Record>
+                                            <PropertyValue Property="Property" PropertyPath="CreatedAt"/>
+                                            <PropertyValue Property="Descending" Bool="true"/>
+                                        </Record>
+                                    </Collection>
+                                </PropertyValue>
+                                <PropertyValue Property="Visualizations">
+                                    <Collection>
+                                        <AnnotationPath>@com.sap.vocabularies.UI.v1.LineItem</AnnotationPath>
+                                    </Collection>
+                                </PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/CreatedAt"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colDate}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/Tank"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colTank}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/Batch"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colBatch}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/Quantity"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colQuantity}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/ERPFeedCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colErpFeedCode}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/AMFeedCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colAmFeedCode}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/ProductionOrder"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colProdOrder}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/MaterialDocumentNumber"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colMatDoc}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/Success"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colStatus}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.FeedingType/ErrorText"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colErrorText}"/></Annotations>
+
+            <!-- ================================================================= -->
+            <!-- DEAD FISH                                                          -->
+            <!-- ================================================================= -->
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType">
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="{@i18n>tabDeadFish}"/>
+                        <PropertyValue Property="TypeNamePlural" String="{@i18n>tabDeadFish}"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="Batch"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionFields">
+                    <Collection>
+                        <PropertyPath>CreatedAt</PropertyPath>
+                        <PropertyPath>Batch</PropertyPath>
+                        <PropertyPath>Unit</PropertyPath>
+                        <PropertyPath>Success</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.LineItem">
+                    <Collection>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="CreatedAt"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Unit"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Batch"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Cause"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Quantity"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ProductionOrder"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="MaterialDocumentNumber"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Success"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ErrorText"/></Record>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionPresentationVariant" Qualifier="Main">
+                    <Record>
+                        <PropertyValue Property="Text" String="{@i18n>tabDeadFish}"/>
+                        <PropertyValue Property="SelectionVariant">
+                            <Record>
+                                <PropertyValue Property="Text" String="{@i18n>tabDeadFish}"/>
+                                <PropertyValue Property="SelectOptions"><Collection/></PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="PresentationVariant">
+                            <Record>
+                                <PropertyValue Property="SortOrder">
+                                    <Collection>
+                                        <Record>
+                                            <PropertyValue Property="Property" PropertyPath="CreatedAt"/>
+                                            <PropertyValue Property="Descending" Bool="true"/>
+                                        </Record>
+                                    </Collection>
+                                </PropertyValue>
+                                <PropertyValue Property="Visualizations">
+                                    <Collection>
+                                        <AnnotationPath>@com.sap.vocabularies.UI.v1.LineItem</AnnotationPath>
+                                    </Collection>
+                                </PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/CreatedAt"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colDate}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/Unit"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colUnit}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/Batch"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colBatch}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/Cause"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colCause}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/Quantity"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colQuantity}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/ProductionOrder"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colProdOrder}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/MaterialDocumentNumber"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colMatDoc}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/Success"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colStatus}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.DeadFishType/ErrorText"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colErrorText}"/></Annotations>
+
+            <!-- ================================================================= -->
+            <!-- TRANSFER                                                           -->
+            <!-- ================================================================= -->
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType">
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="{@i18n>tabTransfer}"/>
+                        <PropertyValue Property="TypeNamePlural" String="{@i18n>tabTransfer}"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="WayBillCode"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionFields">
+                    <Collection>
+                        <PropertyPath>CreatedAt</PropertyPath>
+                        <PropertyPath>Batch</PropertyPath>
+                        <PropertyPath>WayBillCode</PropertyPath>
+                        <PropertyPath>Success</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.LineItem">
+                    <Collection>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="CreatedAt"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="WayBillCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ERPStoreCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ERPDestinationStoreCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ERPItemCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Qty"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Batch"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="MaterialDocumentNumber"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Success"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ErrorText"/></Record>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionPresentationVariant" Qualifier="Main">
+                    <Record>
+                        <PropertyValue Property="Text" String="{@i18n>tabTransfer}"/>
+                        <PropertyValue Property="SelectionVariant">
+                            <Record>
+                                <PropertyValue Property="Text" String="{@i18n>tabTransfer}"/>
+                                <PropertyValue Property="SelectOptions"><Collection/></PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="PresentationVariant">
+                            <Record>
+                                <PropertyValue Property="SortOrder">
+                                    <Collection>
+                                        <Record>
+                                            <PropertyValue Property="Property" PropertyPath="CreatedAt"/>
+                                            <PropertyValue Property="Descending" Bool="true"/>
+                                        </Record>
+                                    </Collection>
+                                </PropertyValue>
+                                <PropertyValue Property="Visualizations">
+                                    <Collection>
+                                        <AnnotationPath>@com.sap.vocabularies.UI.v1.LineItem</AnnotationPath>
+                                    </Collection>
+                                </PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/CreatedAt"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colDate}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/WayBillCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colWayBill}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/ERPStoreCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colFromStore}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/ERPDestinationStoreCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colToStore}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/ERPItemCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colItem}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/Qty"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colQuantity}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/Batch"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colBatch}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/MaterialDocumentNumber"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colMatDoc}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/Success"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colStatus}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.TransferType/ErrorText"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colErrorText}"/></Annotations>
+
+            <!-- ================================================================= -->
+            <!-- HARVEST                                                            -->
+            <!-- ================================================================= -->
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType">
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="{@i18n>tabHarvest}"/>
+                        <PropertyValue Property="TypeNamePlural" String="{@i18n>tabHarvest}"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="com.sap.vocabularies.UI.v1.DataField">
+                                <PropertyValue Property="Value" Path="CageLotID"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionFields">
+                    <Collection>
+                        <PropertyPath>CreatedAt</PropertyPath>
+                        <PropertyPath>Batch</PropertyPath>
+                        <PropertyPath>CageLotID</PropertyPath>
+                        <PropertyPath>Success</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.LineItem">
+                    <Collection>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="CreatedAt"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="CageLotID"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Unit"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Batch"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ERPSiteCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="AMSiteCode"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ProductionOrder"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ProdOrderConfirmation"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="Success"/></Record>
+                        <Record Type="com.sap.vocabularies.UI.v1.DataField"><PropertyValue Property="Value" Path="ErrorText"/></Record>
+                    </Collection>
+                </Annotation>
+
+                <Annotation Term="com.sap.vocabularies.UI.v1.SelectionPresentationVariant" Qualifier="Main">
+                    <Record>
+                        <PropertyValue Property="Text" String="{@i18n>tabHarvest}"/>
+                        <PropertyValue Property="SelectionVariant">
+                            <Record>
+                                <PropertyValue Property="Text" String="{@i18n>tabHarvest}"/>
+                                <PropertyValue Property="SelectOptions"><Collection/></PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="PresentationVariant">
+                            <Record>
+                                <PropertyValue Property="SortOrder">
+                                    <Collection>
+                                        <Record>
+                                            <PropertyValue Property="Property" PropertyPath="CreatedAt"/>
+                                            <PropertyValue Property="Descending" Bool="true"/>
+                                        </Record>
+                                    </Collection>
+                                </PropertyValue>
+                                <PropertyValue Property="Visualizations">
+                                    <Collection>
+                                        <AnnotationPath>@com.sap.vocabularies.UI.v1.LineItem</AnnotationPath>
+                                    </Collection>
+                                </PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/CreatedAt"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colDate}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/CageLotID"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colCageLot}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/Unit"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colUnit}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/Batch"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colBatch}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/ERPSiteCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colErpSite}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/AMSiteCode"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colAmSite}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/ProductionOrder"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colProdOrder}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/ProdOrderConfirmation"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colConfirmation}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/Success"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colStatus}"/></Annotations>
+            <Annotations Target="com.sap.gateway.srvd.zgilgar_ui_aqua.v0001.HarvestType/ErrorText"><Annotation Term="com.sap.vocabularies.Common.v1.Label" String="{@i18n>colErrorText}"/></Annotations>
+
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

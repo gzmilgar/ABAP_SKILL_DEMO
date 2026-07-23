@@ -3,7 +3,11 @@
   "sap.app": {
     "id": "com.gilgar.aquamonitor",
     "type": "application",
-    "i18n": "i18n/i18n.properties",
+    "i18n": {
+      "bundleUrl": "i18n/i18n.properties",
+      "supportedLocales": [""],
+      "fallbackLocale": ""
+    },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
     "applicationVersion": {
@@ -14,7 +18,17 @@
         "uri": "/sap/opu/odata4/sap/zgilgar_ui_aqua_o4/srvd/sap/zgilgar_ui_aqua/0001/",
         "type": "OData",
         "settings": {
-          "odataVersion": "4.0"
+          "odataVersion": "4.0",
+          "annotations": [
+            "localAnnotations"
+          ]
+        }
+      },
+      "localAnnotations": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotations.xml",
+        "settings": {
+          "localUri": "annotations/annotations.xml"
         }
       }
     }
@@ -28,18 +42,13 @@
     }
   },
   "sap.ui5": {
-    "rootView": {
-      "viewName": "com.gilgar.aquamonitor.view.App",
-      "type": "XML",
-      "id": "app",
-      "async": true
-    },
+    "flexEnabled": true,
     "dependencies": {
       "minUI5Version": "1.120.0",
       "libs": {
         "sap.ui.core": {},
         "sap.m": {},
-        "sap.f": {}
+        "sap.fe.templates": {}
       }
     },
     "contentDensities": {
@@ -50,19 +59,80 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "com.gilgar.aquamonitor.i18n.i18n"
+          "bundleName": "com.gilgar.aquamonitor.i18n.i18n",
+          "supportedLocales": [""],
+          "fallbackLocale": ""
         }
       },
-      "data": {
-        "type": "sap.ui.model.json.JSONModel"
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties",
+        "settings": {
+          "supportedLocales": [""],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "autoExpandSelect": true,
+          "operationMode": "Server",
+          "groupId": "$auto",
+          "earlyRequests": true
+        }
       }
     },
-    "resources": {
-      "css": [
+    "routing": {
+      "config": {},
+      "routes": [
         {
-          "uri": "css/style.css"
+          "pattern": ":?query:",
+          "name": "AquaMonitorList",
+          "target": "AquaMonitorList"
         }
-      ]
+      ],
+      "targets": {
+        "AquaMonitorList": {
+          "type": "Component",
+          "id": "AquaMonitorList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "initialLoad": "Enabled",
+              "views": {
+                "showCounts": true,
+                "paths": [
+                  {
+                    "key": "Feeding",
+                    "entitySet": "Feeding",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#Main"
+                  },
+                  {
+                    "key": "DeadFish",
+                    "entitySet": "DeadFish",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#Main"
+                  },
+                  {
+                    "key": "Transfer",
+                    "entitySet": "Transfer",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#Main"
+                  },
+                  {
+                    "key": "Harvest",
+                    "entitySet": "Harvest",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#Main"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
   }
 }
