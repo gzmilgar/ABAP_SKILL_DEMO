@@ -5,6 +5,14 @@ sap.ui.define([
 ], function (Controller, Filter, FilterOperator) {
     "use strict";
 
+    // Her tab icin: tab'a ozel ekstra filtre alaninin OData property'si
+    var TAB_EXTRA_FIELD = {
+        Feeding: "Tank",
+        DeadFish: "Unit",
+        Transfer: "WayBillCode",
+        Harvest: "CageLotID"
+    };
+
     return Controller.extend("com.gilgar.aquamonitor.controller.App", {
 
         onInit: function () {
@@ -20,25 +28,65 @@ sap.ui.define([
         },
 
         /**
-         * SearchField -> app:tableId custom data'si ile ilgili tabloyu bulur,
-         * Batch alaninda "contains" filtresi uygular.
+         * Go (Baslat) butonu / Input submit -> app:tab custom data'sindan
+         * hangi tab oldugunu bulur, filtre kontrollerini okuyup tabloya uygular.
          */
-        onSearch: function (oEvent) {
-            var sQuery = oEvent.getParameter("query"),
-                sTableId = oEvent.getSource().data("tableId"),
-                oTable = this.byId(sTableId),
-                oBinding = oTable.getBinding("items"),
-                aFilters = [];
+        onGo: function (oEvent) {
+            var sTab = oEvent.getSource().data("tab");
+            this._applyFilters(sTab);
+        },
 
-            if (sQuery) {
-                aFilters.push(new Filter({
-                    path: "Batch",
-                    operator: FilterOperator.Contains,
-                    value1: sQuery,
-                    caseSensitive: false
-                }));
+        /**
+         * Temizle butonu -> filtre kontrollerini sifirlar, filtresiz liste gosterir.
+         */
+        onClear: function (oEvent) {
+            var sTab = oEvent.getSource().data("tab");
+
+            this.byId("fDate" + sTab).setDateValue(null).setSecondDateValue(null).setValue("");
+            this.byId("fBatch" + sTab).setValue("");
+            this.byId("fExtra" + sTab).setValue("");
+            this.byId("fStatus" + sTab).setSelectedKey("ALL");
+
+            this.byId("tbl" + sTab).getBinding("items").filter([]);
+        },
+
+        _applyFilters: function (sTab) {
+            var aFilters = [];
+
+            // Tarih araligi (EntryDateTime)
+            var oDR = this.byId("fDate" + sTab),
+                dFrom = oDR.getDateValue(),
+                dTo = oDR.getSecondDateValue() || dFrom;
+            if (dFrom) {
+                var dStart = new Date(dFrom);
+                dStart.setHours(0, 0, 0, 0);
+                var dEnd = new Date(dTo);
+                dEnd.setHours(23, 59, 59, 999);
+                aFilters.push(new Filter("EntryDateTime", FilterOperator.BT,
+                    dStart.toISOString(), dEnd.toISOString()));
             }
-            oBinding.filter(aFilters);
+
+            // Batch (contains)
+            var sBatch = this.byId("fBatch" + sTab).getValue().trim();
+            if (sBatch) {
+                aFilters.push(new Filter("Batch", FilterOperator.Contains, sBatch));
+            }
+
+            // Tab'a ozel alan (Tank / Unit / WayBillCode / CageLotID)
+            var sExtra = this.byId("fExtra" + sTab).getValue().trim();
+            if (sExtra) {
+                aFilters.push(new Filter(TAB_EXTRA_FIELD[sTab], FilterOperator.Contains, sExtra));
+            }
+
+            // Durum (Success)
+            var sStatus = this.byId("fStatus" + sTab).getSelectedKey();
+            if (sStatus === "OK") {
+                aFilters.push(new Filter("Success", FilterOperator.EQ, true));
+            } else if (sStatus === "ERR") {
+                aFilters.push(new Filter("Success", FilterOperator.EQ, false));
+            }
+
+            this.byId("tbl" + sTab).getBinding("items").filter(aFilters);
         },
 
         /**
